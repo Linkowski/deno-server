@@ -11,16 +11,22 @@ export async function runtime(
   options?: RuntimeOptions,
 ): Promise<void> {
   // Load files from the controllers directory
-  if (options?.controllers) {
-    const controllerPath = new URL(options.controllers, import.meta.url).href;
-    const files = Array.from(Deno.readDirSync(controllerPath.replace("file://", "")));
+  if (options?.root) {
+    const files = Array.from(Deno.readDirSync(options.root));
 
     for (const file of files) {
-      // and ignore files with .test.ts extension
-      if (file.isFile && file.name.endsWith(".ts") && !file.name.endsWith(".test.ts")) {
-        const fileUrl = new URL(controllerPath + "/" + file.name, import.meta.url).href;
+      // Skip if not a file
+      if (!file.isFile) continue;
+      // Skip if not a test file
+      if (file.name.endsWith(".test.ts")) continue;
 
-        await import(fileUrl);
+      // Import the file
+      if (file.isFile && file.name.endsWith(".ts")) {
+        try {
+          await import(options.root.href + "/" + file.name);
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   }
