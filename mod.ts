@@ -1,5 +1,4 @@
 export {
-  type Context,
   Controller,
   Delete,
   Get,
@@ -9,4 +8,6 @@ export {
   Post,
   Put,
   runtime,
+  type Context,
+  type ServerError
 } from './src/mod.ts';
