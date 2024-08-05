@@ -14,7 +14,7 @@ export async function runtime(
   if (options?.controllers) {
     const controllerPath = new URL(options.controllers, import.meta.url).href;
     console.log('controllerPath', controllerPath);
-    const files = Array.from(Deno.readDirSync(controllerPath));
+    const files = Array.from(Deno.readDirSync(controllerPath.replace('file://', '')));
 
     for (const file of files) {
       // and ignore files with .test.ts extension
