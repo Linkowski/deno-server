@@ -3,11 +3,14 @@ export {
   Delete,
   Get,
   Head,
+  Monitor,
   Options,
   Patch,
   Post,
   Put,
+  ServerError,
   runtime,
   type Context,
-  type ServerError
+  type MonitorType
 } from './src/mod.ts';
+
