@@ -20,6 +20,12 @@ export async function runtime(
       if (file.isFile && file.name.endsWith('.ts') && !file.name.endsWith('.test.ts')) {
         const filePath = controllerPath + '/' + file.name
 
+        // if /src is duplicated in the path, remove it
+        // deno deploy bug
+        if (filePath.includes('/src/src')) {
+          filePath.replace('/src/src', '/src');
+        }
+
         await import(filePath);
       }
     }
