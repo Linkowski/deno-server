@@ -12,8 +12,7 @@ export async function runtime(
 ): Promise<void> {
   // Load files from the controllers directory
   if (options?.controllers) {
-    // real path is used to get the absolute path of the controllers directory
-    const controllerPath = Deno.realPathSync(Deno.cwd() + options.controllers);
+    const controllerPath = Deno.realPathSync(options.controllers);
     const files = Array.from(Deno.readDirSync(controllerPath));
 
     for (const file of files) {
