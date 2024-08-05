@@ -12,7 +12,7 @@ export async function runtime(
 ): Promise<void> {
   // Load files from the controllers directory
   if (options?.controllers) {
-    const controllerPath = Deno.realPathSync(options.controllers);
+    const controllerPath = new URL(options.controllers, import.meta.url).href;
     const files = Array.from(Deno.readDirSync(controllerPath));
 
     for (const file of files) {
