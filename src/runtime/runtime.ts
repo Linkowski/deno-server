@@ -20,8 +20,6 @@ export async function runtime(
       if (file.isFile && file.name.endsWith('.ts') && !file.name.endsWith('.test.ts')) {
         const filePath = controllerPath + '/' + file.name
 
-        console.log('filePath', filePath);
-
         await import(filePath);
       }
     }
