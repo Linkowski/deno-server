@@ -17,7 +17,8 @@ export async function runtime(
     const files = Array.from(Deno.readDirSync(controllerPath));
 
     for (const file of files) {
-      if (file.isFile && file.name.endsWith('.ts')) {
+      // and ignore files with .test.ts extension
+      if (file.isFile && file.name.endsWith('.ts') && !file.name.endsWith('.test.ts')) {
         await import(`${controllerPath}/${file.name}`);
       }
     }
