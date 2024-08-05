@@ -19,14 +19,13 @@ export async function runtime(
       if (!file.isFile) continue;
       // Skip if not a test file
       if (file.name.endsWith(".test.ts")) continue;
+      // Skip not a typescript file
+      if (!file.name.endsWith(".ts")) continue;
 
-      // Import the file
-      if (file.isFile && file.name.endsWith(".ts")) {
-        try {
-          await import(options.root.href + "/" + file.name);
-        } catch (error) {
-          console.error(error);
-        }
+      try {
+        await import(`${options.root}/${file.name}`);
+      } catch (error) {
+        console.error(error);
       }
     }
   }
