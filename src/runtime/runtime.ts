@@ -14,7 +14,12 @@ export async function runtime(
   if (options?.controllers) {
     const controllerPath = Deno.realPathSync(options.controllers);
 
-    const files = Array.from(Deno.readDirSync(controllerPath));
+    // real path is used to get the absolute path of the controllers directory
+    const files = Array.from(
+      Deno.readDirSync(
+        Deno.cwd() + controllerPath
+      )
+    );
 
     for (const file of files) {
       // and ignore files with .test.ts extension
