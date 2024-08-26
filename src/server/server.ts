@@ -24,7 +24,7 @@ export class Server {
     const item = this.store.get(pathname, method);
     const controller = Reflect.construct(item.classRef, []);
     const func = controller[item.propertyKey];
-    const response = func.call(
+    const response = await func.call(
       controller,
       {
         // The request object
