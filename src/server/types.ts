@@ -11,14 +11,8 @@ export type SafeObject = Object;
  */
 export interface Context<
   Body = Record<string, unknown | undefined> | string | undefined,
-  Params extends Record<string, string | undefined> = Record<
-    string,
-    string | undefined
-  >,
-  SearchParams extends Record<string, string | undefined> = Record<
-    string,
-    string | undefined
-  >,
+  Params = Record<string, unknown | undefined> | string | undefined,
+  SearchParams= Record<string, unknown | undefined> | string | undefined,
 > {
   request: Request;
   params: Params;
