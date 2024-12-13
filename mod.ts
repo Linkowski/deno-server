@@ -8,8 +8,9 @@ export {
   Patch,
   Post,
   Put,
-  ServerError,
   runtime,
+  Server,
+  ServerError,
   type Context,
   type MonitorType
 } from './src/mod.ts';
