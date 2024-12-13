@@ -25,7 +25,7 @@ import { BaseError } from './types.ts';
 export class ServerError extends Error implements BaseError {
   constructor(
     public readonly code: number = 500,
-    public readonly message: string = 'Server error',
+    public override readonly  message: string = 'Server error',
     public readonly scope: string = 'Server',
     private readonly monitor = new Monitor(scope),
   ) {
@@ -39,7 +39,7 @@ export class ServerError extends Error implements BaseError {
    * @param error - The error to check
    * @returns `true` if the error is a `ServerError`, otherwise `false`
    */
-  static isServerError(error: Error): error is ServerError {
+  static isServerError(error: Error | unknown): error is ServerError {
     return error instanceof ServerError;
   }
 }

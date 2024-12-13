@@ -1,5 +1,3 @@
-import { serve } from 'https://deno.land/std@0.192.0/http/server.ts';
-
 import { Deserialize } from '../deserialize/index.ts';
 import { ServerError } from '../error/error.ts';
 import { Monitor } from '../monitor/index.ts';
@@ -7,6 +5,8 @@ import { Store } from './store.ts';
 import { Context } from './types.ts';
 
 export class Server {
+  private server: Deno.HttpServer | undefined;
+
   constructor(
     private readonly store = new Store(),
     private readonly monitor = new Monitor('Server'),
@@ -15,7 +15,15 @@ export class Server {
   listen(port: number | undefined): void {
     this.store.merge();
 
-    serve((request) => this.handleRequest(request), this.serverInit(port));
+    this.server = Deno.serve(this.serverInit(port), (request) => this.handleRequest(request));
+
+    this.server.finished.finally(() => {
+      this.monitor.info('Server closed');
+    });
+  }
+
+  close(): void {
+    this.server?.shutdown();
   }
 
   private async handle(request: Request): Promise<Response> {
@@ -81,10 +89,7 @@ export class Server {
 
   private serverInit(
     port: number | undefined,
-  ): {
-    port: number | undefined;
-    onListen: ({ port }: { port: number }) => void;
-  } {
+  ): Deno.ServeTcpOptions {
     return {
       port,
       onListen: ({ port }) => this.monitor.info(`Listening on port ${port}`),
